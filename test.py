@@ -2,8 +2,12 @@ import tkinter as tk
 import time
 import random
 
-row = 11
-column = 11
+#row = 11
+#column = 11
+
+global creation
+global userRow
+global userCol
 
 
 # Matrix = [[1 for x in range(0, 12)] for x in range(0, 12)]
@@ -25,6 +29,9 @@ column = 11
 #          [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
 #          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 def createMatrix(userInputRow, userInputCol, userButton, canvas):
+
+    
+
     userRow = int(userInputRow.get())
     userCol = int(userInputCol.get())
     userInputRow.delete(0, 'end')
@@ -39,8 +46,9 @@ def createMatrix(userInputRow, userInputCol, userButton, canvas):
         for y in range(1, userCol + 1):
             Matrix[userRow + 1][userCol + 1] = random.randint(0, 1)
 
-    printer = PrintRect()
-    printer.brrr(Matrix, canvas, userRow, userCol)
+    #printer = PrintRect()
+    #printer.brrr(Matrix, canvas, userRow, userCol)
+    brrr(Matrix, canvas, userRow, userCol)
     return Matrix
 
 
@@ -66,25 +74,25 @@ Matrix2 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 # canvas.pack()
 
 
-class PrintRect:
-    def brrr(self, Matrix, canvas, userRow, userCol):
-        cellwidth = 10
-        cellheight = 10
-        creation = 0
-        if creation == 0:
-            for col in range(10):
-                for ro in range(10):
-                    x1 = col * cellwidth
-                    y1 = ro * cellheight
-                    x2 = x1 + cellwidth
-                    y2 = y1 + cellheight
-                    if Matrix[ro+1][col+1] == 1:
-                        canvas.create_rectangle(
-                            x1, y1, x2, y2, fill='black', width=0)
-                    else:
-                        canvas.create_rectangle(
-                            x1, y1, x2, y2, fill='white', width=0)
-            creation = 1
+#class PrintRect:
+def brrr(Matrix, canvas, userRow, userCol):
+    cellwidth = 10
+    cellheight = 10
+    creation = 0
+    if creation == 0:
+        for col in range(userCol):
+            for ro in range(userRow):
+                x1 = col * cellwidth
+                y1 = ro * cellheight
+                x2 = x1 + cellwidth
+                y2 = y1 + cellheight
+                if Matrix[ro+1][col+1] == 1:
+                    canvas.create_rectangle(
+                        x1, y1, x2, y2, fill='black', width=0)
+                else:
+                    canvas.create_rectangle(
+                        x1, y1, x2, y2, fill='white', width=0)
+        creation = 1
 #rectangle(breitea, höhea, breiteb, höheb)
 #canvas.create_rectangle(0, 0, 100, 100, fill='black', width=0)
 #canvas.create_rectangle(100, 0, 200, 100, fill='black', width=0)
@@ -119,8 +127,8 @@ class CheckN:
 class Run:
 
     def myFunc(self, Matrix):
-        for i in range(1, row):
-            for j in range(1, column):
+        for i in range(1, userRow):
+            for j in range(1, userCol):
                 gol = CheckN(i, j)
                 golSpeicher = gol.Check(Matrix)
                 if Matrix[i][j] == 0:
@@ -134,8 +142,8 @@ class Run:
                     else:
                         Matrix2[i][j] = 0
 
-        for k in range(row):
-            for l in range(column):
+        for k in range(userRow):
+            for l in range(userCol):
                 Matrix[k][l] = Matrix2[k][l]
 
 
@@ -167,12 +175,15 @@ def main():
                            createMatrix(userInputRow, userInputCol, userButton, canvas))
     userButton.pack()
 
-    printer = PrintRect()
+   # printer = PrintRect()
+    
+    root.mainloop()
+
     start = Run()
     wait = 0
     while wait < 200000:
-        printer.brrr(Matrix, canvas, userInputRow, userInputCol)
-
+        #printer.brrr(Matrix, canvas, userInputRow, userInputCol)
+        brrr(Matrix, canvas, userInputRow, userInputCol)
         start.myFunc(Matrix)
         canvas.update()
         wait += 1
